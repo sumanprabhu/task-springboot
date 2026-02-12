@@ -43,7 +43,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}/roles/{roleID}")
-    public ResponseEntity<User> assignRole(@PathVariable UUID id,@PathVariable Long roleID){
+    public ResponseEntity<User> assignRole(@PathVariable UUID id,@PathVariable UUID roleID){
         return ResponseEntity.ok(userService.assignRole(id,roleID));
     }
 
@@ -54,8 +54,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}/roles/{roleId}")
-    public ResponseEntity<User> removeRole(@PathVariable UUID id, @PathVariable Long roleId){
+    public ResponseEntity<User> removeRole(@PathVariable UUID id, @PathVariable UUID roleId){
         return ResponseEntity.ok(userService.removeRole(id,roleId));
     }
-
 }

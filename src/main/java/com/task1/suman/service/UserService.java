@@ -7,7 +7,6 @@ import com.task1.suman.repo.RoleRepo;
 import com.task1.suman.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -61,7 +60,7 @@ public class UserService {
 
         if (user.getRoles() != null && !user.getRoles().isEmpty()) {
 
-            List<Long> roleIds = user.getRoles()
+            List<UUID> roleIds = user.getRoles()
                     .stream()
                     .map(Role::getId)
                     .toList();
@@ -89,7 +88,7 @@ public class UserService {
         return userRepo.findAllByNameContainingIgnoreCase(name);
     }
 
-    public User assignRole(UUID id, Long roleID) {
+    public User assignRole(UUID id, UUID roleID) {
         User user = userRepo.findById(id)
                 .orElseThrow(() ->
                         new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")
@@ -104,7 +103,7 @@ public class UserService {
         return userRepo.save(user);
     }
 
-    public User removeRole(UUID id, Long roleId) {
+    public User removeRole(UUID id, UUID roleId) {
         User user = userRepo.findById(id)
                 .orElseThrow(() ->
                         new ResponseStatusException(
