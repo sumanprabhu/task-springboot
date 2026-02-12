@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -65,7 +67,7 @@ public class UserService {
                     .map(Role::getId)
                     .toList();
 
-            List<Role> rolesFromDb = roleRepo.findAllById(roleIds);
+            Set<Role> rolesFromDb = new HashSet<>(roleRepo.findAllById(roleIds));
 
             if (rolesFromDb.size() != roleIds.size()) {
                 throw new ResponseStatusException(
@@ -73,8 +75,7 @@ public class UserService {
                         "One or more roles are invalid"
                 );
             }
-
-            existingUser.setRoles(rolesFromDb);
+            existingUser.getRoles().addAll(rolesFromDb);
         }
 
         return userRepo.save(existingUser);
