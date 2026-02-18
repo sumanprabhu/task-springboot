@@ -1,6 +1,5 @@
 package com.task1.suman.service;
 
-import com.task1.suman.model.Address;
 import com.task1.suman.model.Role;
 import com.task1.suman.model.User;
 import com.task1.suman.repo.RoleRepo;
@@ -10,9 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -30,52 +27,61 @@ public class UserService {
 
     public User getUser(UUID id) {
         return userRepo.findById(id)
-                .orElseThrow(
-                        ()->new ResponseStatusException(HttpStatus.NOT_FOUND,"user not found with the id :")
+                .orElseThrow(() ->
+                        new ResponseStatusException(
+                                HttpStatus.NOT_FOUND,
+                                "User not found with id: " + id
+                        )
                 );
     }
 
     public User addUser(User user) {
+
+        if (user.getRole() != null) {
+            Role role = roleRepo.findById(user.getRole().getId())
+                    .orElseThrow(() ->
+                            new ResponseStatusException(
+                                    HttpStatus.BAD_REQUEST,
+                                    "Invalid role"
+                            )
+                    );
+
+            user.setRole(role);
+        }
+
         return userRepo.save(user);
     }
 
-    public User updateUser(UUID id,User user) {
+    public User updateUser(UUID id, User user) {
+
         User existingUser = userRepo.findById(id)
-                .orElseThrow(
-                    ()->new ResponseStatusException(HttpStatus.NOT_FOUND,"user not found with the id :" +id)
+                .orElseThrow(() ->
+                        new ResponseStatusException(
+                                HttpStatus.NOT_FOUND,
+                                "User not found with id: " + id
+                        )
                 );
+
         existingUser.setName(user.getName());
         existingUser.setEmail(user.getEmail());
         existingUser.setContactNum(user.getContactNum());
 
-        if(user.getAddress()!=null){
-            Address existingAddress = existingUser.getAddress();
-            if(existingAddress==null)
-                existingAddress=new Address();
-            existingAddress.setStreet(user.getAddress().getStreet());
-            existingAddress.setCity(user.getAddress().getCity());
-            existingAddress.setState(user.getAddress().getState());
-            existingAddress.setZipCode(user.getAddress().getZipCode());
-
-            existingUser.setAddress(existingAddress);
+        // Update Address
+        if (user.getAddress() != null) {
+            existingUser.setAddress(user.getAddress());
         }
 
-        if (user.getRoles() != null && !user.getRoles().isEmpty()) {
+        // Update Role (only one role allowed now)
+        if (user.getRole() != null) {
+            Role role = roleRepo.findById(user.getRole().getId())
+                    .orElseThrow(() ->
+                            new ResponseStatusException(
+                                    HttpStatus.BAD_REQUEST,
+                                    "Invalid role"
+                            )
+                    );
 
-            List<UUID> roleIds = user.getRoles()
-                    .stream()
-                    .map(Role::getId)
-                    .toList();
-
-            Set<Role> rolesFromDb = new HashSet<>(roleRepo.findAllById(roleIds));
-
-            if (rolesFromDb.size() != roleIds.size()) {
-                throw new ResponseStatusException(
-                        HttpStatus.BAD_REQUEST,
-                        "One or more roles are invalid"
-                );
-            }
-            existingUser.getRoles().addAll(rolesFromDb);
+            existingUser.setRole(role);
         }
 
         return userRepo.save(existingUser);
@@ -88,47 +94,5 @@ public class UserService {
     public List<User> getUserByName(String name) {
         return userRepo.findAllByNameContainingIgnoreCase(name);
     }
-
-    public User assignRole(UUID id, UUID roleID) {
-        User user = userRepo.findById(id)
-                .orElseThrow(() ->
-                        new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")
-                );
-        Role role = roleRepo.findById(roleID)
-                .orElseThrow(()->
-                        new ResponseStatusException(HttpStatus.NOT_FOUND,"Role not found")
-                );
-        if(user.getRoles().contains(role))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"User already has this role");
-        user.getRoles().add(role);
-        return userRepo.save(user);
-    }
-
-    public User removeRole(UUID id, UUID roleId) {
-        User user = userRepo.findById(id)
-                .orElseThrow(() ->
-                        new ResponseStatusException(
-                                HttpStatus.NOT_FOUND,
-                                "User not found"
-                        )
-                );
-
-        Role role = roleRepo.findById(roleId)
-                .orElseThrow(() ->
-                        new ResponseStatusException(
-                                HttpStatus.NOT_FOUND,
-                                "Role not found"
-                        )
-                );
-
-        if (!user.getRoles().contains(role)) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "User does not have this role"
-            );
-        }
-        user.getRoles().remove(role);
-        return userRepo.save(user);
-    }
-
 }
+

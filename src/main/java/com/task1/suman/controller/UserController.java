@@ -42,19 +42,9 @@ public class UserController {
         return new ResponseEntity<>(userService.updateUser(id,user),HttpStatus.OK);
     }
 
-    @PutMapping("/{id}/roles/{roleID}")
-    public ResponseEntity<User> assignRole(@PathVariable UUID id,@PathVariable UUID roleID){
-        return ResponseEntity.ok(userService.assignRole(id,roleID));
-    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable UUID id){
         userService.deleteUser(id);
         return ResponseEntity.ok("Deleted user with the specified id");
-    }
-
-    @DeleteMapping("/{id}/roles/{roleId}")
-    public ResponseEntity<User> removeRole(@PathVariable UUID id, @PathVariable UUID roleId){
-        return ResponseEntity.ok(userService.removeRole(id,roleId));
     }
 }
