@@ -42,22 +42,28 @@ public class SecurityConfig {
                 // 2. Define URL access rules
                 .authorizeHttpRequests(auth -> auth
 
-                                // PUBLIC endpoints — no token needed
-                                .requestMatchers("/auth/**").permitAll()
-                                //  ↑↑↑↑
-                                //  /auth/register and /auth/login are PUBLIC
-                                //  Anyone can register and login without a token!
+                        // PUBLIC
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/ai/**").permitAll()
 
-                                // ADMIN only endpoints
-                                .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.PUT, "/users/**").hasRole("ADMIN")
-                                //  ↑↑↑↑
-                                //  Only ADMIN can DELETE users
+                        // SELF EDIT — any logged in user
+                        .requestMatchers(HttpMethod.GET, "/users/me").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/users/me").authenticated()
 
-                                // Everything else needs authentication (any valid token)
-                                .anyRequest().authenticated()
-                        //  ↑↑↑↑
-                        //  All other URLs need a valid token
+                        // ADMIN REQUEST — any logged in user can request
+                        .requestMatchers(HttpMethod.POST, "/admin/request").authenticated()
+
+                        // ADMIN ONLY — approve/reject and view requests
+                        .requestMatchers("/admin/requests").hasRole("ADMIN")
+                        .requestMatchers("/admin/approve/**").hasRole("ADMIN")
+                        .requestMatchers("/admin/reject/**").hasRole("ADMIN")
+
+                        // ADMIN ONLY — manage other users
+                        .requestMatchers(HttpMethod.PUT, "/users/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
+
+                        // Everything else needs authentication
+                        .anyRequest().authenticated()
                 )
 
                 // 3. Make it STATELESS (no sessions, we use JWT)
