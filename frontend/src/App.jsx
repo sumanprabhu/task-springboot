@@ -10,10 +10,14 @@ import RegisterPage from "./pages/RegisterPage";
 import UsersPage from "./pages/UsersPage";
 import AddUserPage from "./pages/AddUserPage";
 import EditUserPage from "./pages/EditUserPage";
+import ProfilePage from "./pages/ProfilePage";
+import AdminRequestsPage from "./pages/AdminRequestsPage";
+import AgentChatPage from "./pages/AgentChatPage";
 import "./App.css";
 
 function App() {
   const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
 
   return (
     <Router>
@@ -27,11 +31,41 @@ function App() {
         />
         <Route
           path="/add-user"
-          element={token ? <AddUserPage /> : <Navigate to="/login" />}
+          element={
+            token && role === "ADMIN" ? (
+              <AddUserPage />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
         <Route
           path="/edit-user/:id"
-          element={token ? <EditUserPage /> : <Navigate to="/login" />}
+          element={
+            token && role === "ADMIN" ? (
+              <EditUserPage />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+        <Route
+          path="/profile"
+          element={token ? <ProfilePage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/admin-requests"
+          element={
+            token && role === "ADMIN" ? (
+              <AdminRequestsPage />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+        <Route
+          path="/agent"
+          element={token ? <AgentChatPage /> : <Navigate to="/login" />}
         />
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>

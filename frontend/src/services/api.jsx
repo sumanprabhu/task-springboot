@@ -30,4 +30,18 @@ export const addUser = (data) => api.post("/users", data);
 export const updateUser = (id, data) => api.put(`/users/${id}`, data);
 export const deleteUser = (id) => api.delete(`/users/${id}`);
 
+// ✅ NEW — Self Profile
+export const getMyProfile = () => api.get("/users/me");
+export const updateMyProfile = (data) => api.put("/users/me", data);
+
+// ✅ NEW — Admin Requests
+export const requestAdminAccess = (reason) =>
+  api.post("/admin/request", { reason });
+export const getPendingRequests = () => api.get("/admin/requests");
+export const approveRequest = (id) => api.put(`/admin/approve/${id}`);
+export const rejectRequest = (id) => api.put(`/admin/reject/${id}`);
+
+// AI AGENT
+export const agentChat = (message) => api.post("/ai/agent", { message });
+
 export default api;

@@ -10,7 +10,6 @@ const RegisterPage = () => {
     email: "",
     password: "",
     contactNum: "",
-    roleName: "USER",
   });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -80,16 +79,6 @@ const RegisterPage = () => {
           className="form-input"
           required
         />
-
-        <select
-          name="roleName"
-          value={form.roleName}
-          onChange={handleChange}
-          className="form-input"
-        >
-          <option value="USER">USER</option>
-          <option value="ADMIN">ADMIN</option>
-        </select>
 
         <button type="submit" className="submit-btn">
           Register

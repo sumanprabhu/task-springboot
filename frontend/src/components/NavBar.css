@@ -34,11 +34,18 @@
 }
 
 .nav-role {
-  background-color: #e74c3c;
   padding: 3px 10px;
   border-radius: 12px;
   font-size: 12px;
   font-weight: bold;
+}
+
+.role-admin {
+  background-color: #e74c3c;
+}
+
+.role-user {
+  background-color: #3498db;
 }
 
 .logout-btn {
@@ -52,4 +59,27 @@
 
 .logout-btn:hover {
   background-color: #c0392b;
+}
+
+/* ✅ NEW */
+.profile-link {
+  background-color: #2980b9;
+  padding: 5px 12px;
+  border-radius: 5px;
+}
+
+.profile-link:hover {
+  background-color: #3498db;
+  text-decoration: none;
+}
+
+.agent-link {
+  background-color: #27ae60;
+  padding: 5px 12px;
+  border-radius: 5px;
+}
+
+.agent-link:hover {
+  background-color: #219a52;
+  text-decoration: none;
 }

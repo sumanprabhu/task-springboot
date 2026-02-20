@@ -12,6 +12,7 @@ const Navbar = () => {
     localStorage.removeItem("role");
     localStorage.removeItem("email");
     navigate("/login");
+    window.location.reload();
   };
 
   return (
@@ -24,13 +25,31 @@ const Navbar = () => {
             <Link to="/users" className="nav-link">
               Users
             </Link>
+            <Link to="/agent" className="nav-link agent-link">
+              🤖 Agent
+            </Link>
+
             {role === "ADMIN" && (
-              <Link to="/add-user" className="nav-link">
-                Add User
-              </Link>
+              <>
+                <Link to="/add-user" className="nav-link">
+                  Add User
+                </Link>
+                <Link to="/admin-requests" className="nav-link">
+                  📋 Requests
+                </Link>
+              </>
             )}
+
+            <Link to="/profile" className="nav-link profile-link">
+              ⚙️ Profile
+            </Link>
+
             <span className="nav-email">{email}</span>
-            <span className="nav-role">{role}</span>
+            <span
+              className={`nav-role ${role === "ADMIN" ? "role-admin" : "role-user"}`}
+            >
+              {role}
+            </span>
             <button onClick={handleLogout} className="logout-btn">
               Logout
             </button>

@@ -10,7 +10,7 @@ const AddUserPage = () => {
     email: "",
     password: "",
     contactNum: "",
-    roleName: "USER",
+    // ❌ REMOVED roleName
   });
   const [error, setError] = useState("");
 
@@ -77,15 +77,7 @@ const AddUserPage = () => {
           required
         />
 
-        <select
-          name="roleName"
-          value={form.roleName}
-          onChange={handleChange}
-          className="form-input"
-        >
-          <option value="USER">USER</option>
-          <option value="ADMIN">ADMIN</option>
-        </select>
+        {/* ❌ REMOVED role dropdown */}
 
         <div className="btn-group">
           <button type="submit" className="submit-btn">

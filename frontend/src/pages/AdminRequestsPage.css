@@ -1,0 +1,91 @@
+.requests-container {
+  padding: 20px 40px;
+}
+
+.no-requests {
+  text-align: center;
+  padding: 40px;
+  background-color: white;
+  border-radius: 10px;
+  margin-top: 20px;
+  font-size: 18px;
+  color: #555;
+}
+
+.requests-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.request-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  border-left: 5px solid #e67e22;
+}
+
+.request-info h3 {
+  margin: 0 0 5px 0;
+  color: #2c3e50;
+}
+
+.request-email {
+  color: #7f8c8d;
+  font-size: 14px;
+  margin: 2px 0;
+}
+
+.request-reason {
+  color: #555;
+  font-size: 14px;
+  margin: 5px 0;
+}
+
+.request-date {
+  color: #95a5a6;
+  font-size: 12px;
+  margin: 2px 0;
+}
+
+.request-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.approve-btn {
+  padding: 8px 20px;
+  background-color: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.approve-btn:hover {
+  background-color: #219a52;
+}
+
+.reject-btn {
+  padding: 8px 20px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.reject-btn:hover {
+  background-color: #c0392b;
+}
+
+.success-msg {
+  color: green;
+}
